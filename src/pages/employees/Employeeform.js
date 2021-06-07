@@ -24,10 +24,29 @@ const initialValues = {
   isPermanent: false,
 };
 const EmployeeForm = () => {
-  const { values, handleInputChange } = useForm(initialValues);
+  const validate = () => {
+    let temp = {};
+    temp.fullName = values.fullName ? "" : "This filed is required";
+    temp.email = /$^|.+@.+..+/.test(values.email) ? "" : "Email is not valid";
+    temp.mobile = values.mobile.length > 9 ? "" : "Minimum 10 numbers required";
+    temp.departmentID =
+      values.departmentID.length != 0 ? "" : "This filed is required";
+    setErrors({ ...temp });
+    return Object.values(temp).every((x) => x == "");
+  };
+  const { values, setValues, handleInputChange, errors, setErrors, resetForm } =
+    useForm(initialValues);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // window.alert("Testing");
+    if (validate()) {
+      window.alert("Testing");
+    }
+  };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
           <Controls.Input
@@ -35,18 +54,21 @@ const EmployeeForm = () => {
             name="fullName"
             value={values.fullName}
             onChange={handleInputChange}
+            error={errors.fullName}
           />
           <Controls.Input
             label="Email"
             name="email"
             value={values.email}
             onChange={handleInputChange}
+            error={errors.email}
           />
           <Controls.Input
             label="Mobile"
             name="mobile"
             value={values.mobile}
             onChange={handleInputChange}
+            error={errors.mobile}
           />
           <Controls.Input
             label="City"
@@ -69,6 +91,7 @@ const EmployeeForm = () => {
             value={values.departmentID}
             onChange={handleInputChange}
             options={employeeService.getDepartmentCollection()}
+            error={errors.departmentID}
           />
           <Controls.DatePicker
             name="hireDate"
@@ -89,7 +112,7 @@ const EmployeeForm = () => {
               text="Submit"
               type="submit"
             />
-            <Controls.Button text="Reset" color="Default" />
+            <Controls.Button text="Reset" color="default" onClick={resetForm} />
           </div>
         </Grid>
       </Grid>
