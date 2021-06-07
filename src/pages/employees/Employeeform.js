@@ -52,7 +52,9 @@ const EmployeeForm = () => {
     e.preventDefault();
     // window.alert("Testing");
     if (validate()) {
-      window.alert("Testing");
+      // window.alert("Testing");
+      employeeService.insertEmployee(values);
+      resetForm();
     }
   };
 
