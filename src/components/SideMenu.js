@@ -16,7 +16,7 @@ const style = {
 };
 
 const SideMenu = (props) => {
-  console.log(props);
+  // console.log(props);
   const { classes } = props;
   return <div className={classes.sideMenu}></div>;
 };
